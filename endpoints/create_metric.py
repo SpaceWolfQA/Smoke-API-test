@@ -27,11 +27,23 @@ class CreateMetric(Endpoint):
                     print('Max retries exceeded.')
                     raise
 
-    def check_create(self, url_bill, headers):
-        metric_id = get('metric_id')
-        metric_name = get('metric_name')
-        self.response = requests.get(f'{url_bill}/v3/statistics/metrics/{metric_id}', headers=headers)
-        created_metric_name = self.response.json()['int_name']
-        if created_metric_name != metric_name:
-            pytest.fail('Metric does not created')
-        print('Metric created')
+    def check_create(self, url_bill, headers, max_retries, wait_sec):
+        for attempt in range(max_retries):
+            try:
+                metric_id = get('metric_id')
+                metric_name = get('metric_name')
+                self.response = requests.get(f'{url_bill}/v3/statistics/metrics/{metric_id}', headers=headers)
+                created_metric_name = self.response.json()['int_name']
+                if created_metric_name != metric_name:
+                    pytest.fail('Metric does not created')
+                print('Metric created')
+                break
+
+            except Exception as err:
+                print(f'Attempt {attempt + 1} failed:', err, self.response.json())
+                if attempt < max_retries - 1:
+                    print(f'Retrying in {wait_sec} seconds...')
+                    time.sleep(wait_sec)
+                else:
+                    print('Max retries exceeded.')
+                    raise

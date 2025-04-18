@@ -39,7 +39,7 @@ class CreateAddendum(Endpoint):
                 elif add_status == 'upcoming':
                     print('Addendum upcoming')
                 else:
-                    print('Some error activating')
+                    pytest.fail('Plan does not copied')
                 if attempt < max_retries - 1:
                     print(f'Retrying in {wait_sec} seconds...')
                     time.sleep(wait_sec)

@@ -30,11 +30,23 @@ class DeleteClient(Endpoint):
                     print('Max retries exceeded.')
                     raise
 
-    def check_deletion(self, url_iam, headers):
-        client_id = get('client_id')
-        self.response = requests.get(f'{url_iam}/clients/{client_id}', headers=headers)
-        get_email = self.response.json()['email']
-        email = get('email')
-        if get_email == email:
-            pytest.fail('Client does not deleted')
-        print('Client deleted')
+    def check_deletion(self, url_iam, headers, max_retries, wait_sec):
+        for attempt in range(max_retries):
+            try:
+                client_id = get('client_id')
+                self.response = requests.get(f'{url_iam}/clients/{client_id}', headers=headers)
+                get_email = self.response.json()['email']
+                email = get('email')
+                if get_email == email:
+                    pytest.fail('Client does not deleted')
+                print('Client deleted')
+                break
+
+            except Exception as err:
+                print(f'Attempt {attempt + 1} failed', err, self.response.json())
+                if attempt < max_retries - 1:
+                    print(f'Retrying in {wait_sec} seconds...')
+                    time.sleep(wait_sec)
+                else:
+                    print('Max retries exceeded.')
+                    raise

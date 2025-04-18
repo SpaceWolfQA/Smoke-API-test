@@ -36,9 +36,21 @@ class DeleteInvoiceItem(Endpoint):
                     print('Max retries exceeded.')
                     raise
 
-    def check_deletion(self, url_bill, headers):
+    def check_deletion(self, url_bill, headers, max_retries, wait_sec):
         invoice_item_id = get('invoice_item_id')
-        self.response = requests.get(f'{url_bill}/v5/invoices/{invoice_item_id}', headers=headers)
-        if self.response.status_code != 404:
-            pytest.fail('Invoice item does not deleted')
-        print('invoice item deleted')
+        for attempt in range(max_retries):
+            try:
+                self.response = requests.get(f'{url_bill}/v5/invoices/{invoice_item_id}', headers=headers)
+                if self.response.status_code != 404:
+                    pytest.fail('Invoice item does not deleted')
+                print('invoice item deleted')
+                break
+
+            except Exception as err:
+                print(f'Attempt {attempt + 1} failed:', err, self.response.json())
+                if attempt < max_retries - 1:
+                    print(f'Retrying in {wait_sec} seconds...')
+                    time.sleep(wait_sec)
+                else:
+                    print('Max retries exceeded.')
+                    raise

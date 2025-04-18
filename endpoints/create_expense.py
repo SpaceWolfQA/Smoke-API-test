@@ -29,12 +29,24 @@ class CreateExpense(Endpoint):
                     print('Max retries exceeded')
                     raise
 
-    def check_create(self, url_bill, headers):
+    def check_create(self, url_bill, headers, max_retries, wait_sec):
         expense_id = get('expense_id')
         expense_addendum_id = get('addendum_id')
-        self.response = requests.get(f'{url_bill}/v3/expenses/{expense_id}', headers=headers)
-        plan_item_id = self.response.json()['plan_item_id']
-        addendum_id = self.response.json()['addendum_id']
-        if plan_item_id != 387487 and expense_addendum_id != addendum_id:
-            pytest.fail('Expense does not created')
-        print('Expense created')
+        for attempt in range(max_retries):
+            try:
+                self.response = requests.get(f'{url_bill}/v3/expenses/{expense_id}', headers=headers)
+                plan_item_id = self.response.json()['plan_item_id']
+                addendum_id = self.response.json()['addendum_id']
+                if plan_item_id != 387487 and expense_addendum_id != addendum_id:
+                    pytest.fail('Expense does not created')
+                print('Expense created')
+                break
+
+            except Exception as err:
+                print(f'Attempt {attempt + 1} failed:', err, self.response.json())
+                if attempt < max_retries - 1:
+                    print(f'Retrying in {wait_sec} seconds...')
+                    time.sleep(wait_sec)
+                else:
+                    print('Max retries exceeded')
+                    raise

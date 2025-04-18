@@ -58,7 +58,7 @@ def test_create_new_client():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    client.check_creation(url_iam=url_iam, headers=headers)
+    client.check_creation(url_iam=url_iam, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_update_client():
@@ -70,7 +70,7 @@ def test_update_client():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    update.check_signup(url_iam=url_iam, headers=headers)
+    update.check_signup(url_iam=url_iam, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
     update.cancel_recurring_payments(
         url_bill=url_bill,
@@ -79,7 +79,7 @@ def test_update_client():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    update.check_recurring_payments(url_bill=url_bill, headers=headers)
+    update.check_recurring_payments(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
     update.delete_yoomoney(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     update.add_bank_transfer(
@@ -89,7 +89,7 @@ def test_update_client():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    update.check_payments_methods(url_bill=url_bill, headers=headers)
+    update.check_payments_methods(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_payer_id():
@@ -106,7 +106,7 @@ def test_create_contract():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    contract.check_creation(url_bill=url_bill, headers=headers)
+    contract.check_creation(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_create_plan():
@@ -118,7 +118,7 @@ def test_create_plan():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    plan.check_creation(url_bill=url_bill, headers=headers)
+    plan.check_creation(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_edit_plan():
@@ -130,7 +130,7 @@ def test_edit_plan():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    plan.check_edit(url_bill=url_bill, headers=headers)
+    plan.check_edit(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_copy_plan():
@@ -142,7 +142,7 @@ def test_copy_plan():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    plan.check_copy_plan(url_bill=url_bill, headers=headers)
+    plan.check_copy_plan(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_create_metric():
@@ -154,7 +154,7 @@ def test_create_metric():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    metric.check_create(url_bill=url_bill, headers=headers)
+    metric.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_create_feature():
@@ -166,7 +166,7 @@ def test_create_feature():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    feature.check_create(url_bill=url_bill, headers=headers)
+    feature.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_edit_feature():
@@ -178,7 +178,7 @@ def test_edit_feature():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    feature.check_edit(url_bill=url_bill, headers=headers)
+    feature.check_edit(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_add_feature():
@@ -190,7 +190,7 @@ def test_add_feature():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    feature.check_add_feature(url_bill=url_bill, headers=headers)
+    feature.check_add_feature(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_edit_plan_feature():
@@ -202,7 +202,7 @@ def test_edit_plan_feature():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    plan_feature.check_edit(url_bill=url_bill, headers=headers)
+    plan_feature.check_edit(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_get_trial_id():
@@ -219,7 +219,7 @@ def test_update_trial():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    trial.check_update_trial(url_bill=url_bill, headers=headers)
+    trial.check_update_trial(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_statr_trial():
@@ -231,13 +231,13 @@ def test_statr_trial():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    trial.check_start(url_bill=url_bill, headers=headers)
+    trial.check_start(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_end_trial():
     trial = EndTrial()
     trial.end_trial(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
-    trial.check_end(url_bill=url_bill, headers=headers)
+    trial.check_end(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_create_new_addendum():
@@ -261,7 +261,7 @@ def test_create_expense():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    expense.check_create(url_bill=url_bill, headers=headers)
+    expense.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_create_invoice():
@@ -273,13 +273,13 @@ def test_create_invoice():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    invoice.check_create(url_bill=url_bill, headers=headers)
+    invoice.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_update_invoice():
     invoice = UpdateInvoice()
     invoice.update_invoice(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
-    invoice.check_update(url_bill=url_bill, headers=headers)
+    invoice.check_update(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_invoice_item():
@@ -287,56 +287,56 @@ def test_delete_invoice_item():
     invoice.get_invoice_item_id(url_bill=url_bill, headers=headers)
     invoice.delete_invoice_item(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     invoice.check_status_code_is_204()
-    invoice.check_deletion(url_bill=url_bill, headers=headers)
+    invoice.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_invoice():
     invoice = DeleteInvoice()
     invoice.delete_invoice(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     invoice.check_status_code_is_204()
-    invoice.check_deletion(url_bill=url_bill, headers=headers)
+    invoice.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_plan_feature():
     plan_feature = DeletePlanFeature()
     plan_feature.delete_plan_feature(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     plan_feature.check_status_code_is_204()
-    plan_feature.check_deletion(url_bill=url_bill, headers=headers)
+    plan_feature.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_copy_plan():
     plan = DeleteCopyPlan()
     plan.delete_copy_plan(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     plan.check_status_code_is_204()
-    plan.check_deletion(url_bill=url_bill, headers=headers)
+    plan.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_plan():
     plan = DeletePlan()
     plan.delete_plan(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     plan.check_status_code_is_204()
-    plan.check_deletion(url_bill=url_bill, headers=headers)
+    plan.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_feature():
     feature = DeleteFeature()
     feature.delete_feature(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     feature.check_status_code_is_204()
-    feature.check_deletion(url_bill=url_bill, headers=headers)
+    feature.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_metric():
     metric = DeleteMetric()
     metric.delete_metric(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     metric.check_status_code_is_204()
-    metric.check_deletion(url_bill=url_bill, headers=headers)
+    metric.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_contract():
     contract = DeleteContract()
     contract.delete_contract(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
     contract.check_status_code_is_204()
-    contract.check_deletion(url_bill=url_bill, headers=headers)
+    contract.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
 def test_delete_client():
@@ -349,4 +349,4 @@ def test_delete_client():
         wait_sec=wait_sec
     )
     client.check_status_code_is_200()
-    client.check_deletion(url_iam=url_iam, headers=headers)
+    client.check_deletion(url_iam=url_iam, headers=headers, max_retries=max_retries, wait_sec=wait_sec)

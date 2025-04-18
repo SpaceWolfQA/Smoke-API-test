@@ -26,11 +26,23 @@ class EndTrial(Endpoint):
                     print('Max retries exceeded')
                     raise
 
-    def check_end(self, url_bill, headers):
+    def check_end(self, url_bill, headers, max_retries, wait_sec):
         trial_id = get('trial_id')
-        self.response = requests.get(f'{url_bill}/v3/trials/{trial_id}', headers=headers)
-        is_started = self.response.json()['started_at']
-        remainder_sec = self.response.json()['remainder_sec']
-        if is_started is None or remainder_sec is not None:
-            pytest.fail('Trial does not stopped')
-        print('Trial stopped')
+        for attempt in range(max_retries):
+            try:
+                self.response = requests.get(f'{url_bill}/v3/trials/{trial_id}', headers=headers)
+                is_started = self.response.json()['started_at']
+                remainder_sec = self.response.json()['remainder_sec']
+                if is_started is None or remainder_sec is not None:
+                    pytest.fail('Trial does not stopped')
+                print('Trial stopped')
+                break
+
+            except Exception as err:
+                print(f'Attempt {attempt + 1} failed:', err, self.response.json())
+                if attempt < max_retries - 1:
+                    print(f'Retrying in {wait_sec} seconds...')
+                    time.sleep(wait_sec)
+                else:
+                    print('Max retries exceeded')
+                    raise
