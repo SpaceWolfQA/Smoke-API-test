@@ -15,7 +15,6 @@ class CreatePlan(Endpoint):
                 self.response.raise_for_status()
                 plan_id = self.response.json()['id']
                 set('plan_id', plan_id)
-                print('Plan ID:', plan_id)
                 print('Response Status Code:', self.response.status_code)
                 break
 
