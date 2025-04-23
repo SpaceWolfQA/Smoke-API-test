@@ -6,18 +6,21 @@ from config.settings import get, set
 from endpoints.base_endpoint import Endpoint
 
 
-class GetPayerID(Endpoint):
+class GetMoneyValue(Endpoint):
 
-    def get_payer_id(self, url_bill, headers, max_retries, wait_sec):
+    def get_money_value(self, url_bill, headers, max_retries, wait_sec):
         with allure.step('Get client_id'):
             client_id = get('client_id')
-        with allure.step('Get payer_id'):
+        with allure.step('Get money value'):
             for attempt in range(max_retries):
                 try:
-                    self.response = requests.get(f'{url_bill}/v1/payers?client_id={client_id}&active=true', headers=headers)
+                    self.response = requests.get(
+                        f'{url_bill}/v3/expenses?offset=0&limit=10&ordering=-id&client_id={client_id}',
+                        headers=headers
+                    )
                     self.response.raise_for_status()
-                    payer_id = self.response.json()[0]['id']
-                    set('payer_id', payer_id)
+                    money_value = self.response.json()['results'][0]['money_value']
+                    set('money_value', money_value)
                     break
 
                 except Exception as err:

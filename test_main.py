@@ -1,3 +1,5 @@
+import allure
+
 from config.settings import *
 from data.payload_new_client import new_client_payload
 from data.payload_update_signup import update_signup_payload
@@ -35,6 +37,7 @@ from endpoints.update_trial import UpdateTrial
 from endpoints.start_trial import StartTrial
 from endpoints.end_trial import EndTrial
 from endpoints.create_addendum import CreateAddendum
+from endpoints.get_money_value import GetMoneyValue
 from endpoints.create_expense import CreateExpense
 from endpoints.create_invoice import CreateInvoice
 from endpoints.update_invoice import UpdateInvoice
@@ -49,6 +52,8 @@ from endpoints.delete_contract import DeleteContract
 from endpoints.delete_client import DeleteClient
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Client Options')
 def test_create_new_client():
     client = CreateClient()
     client.new_client(
@@ -58,9 +63,12 @@ def test_create_new_client():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    client.check_status_code_is_201()
     client.check_creation(url_iam=url_iam, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Client Options')
 def test_update_client():
     update = UpdateClient()
     update.update_signup(
@@ -70,6 +78,7 @@ def test_update_client():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    update.check_status_code_is_200()
     update.check_signup(url_iam=url_iam, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
     update.cancel_recurring_payments(
@@ -79,9 +88,11 @@ def test_update_client():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    update.check_status_code_is_200()
     update.check_recurring_payments(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
     update.delete_yoomoney(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    update.check_status_code_is_200()
     update.add_bank_transfer(
         url_bill=url_bill,
         headers=headers,
@@ -89,14 +100,20 @@ def test_update_client():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    update.check_status_code_is_200()
     update.check_payments_methods(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Payer ID')
 def test_payer_id():
     payer_id = GetPayerID()
     payer_id.get_payer_id(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    payer_id.check_status_code_is_200()
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Contract Options')
 def test_create_contract():
     contract = CreateContract()
     contract.create_contract(
@@ -106,9 +123,12 @@ def test_create_contract():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    contract.check_status_code_is_201()
     contract.check_creation(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Plan Options')
 def test_create_plan():
     plan = CreatePlan()
     plan.create_plan(
@@ -118,9 +138,12 @@ def test_create_plan():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    plan.check_status_code_is_201()
     plan.check_creation(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Plan Options')
 def test_edit_plan():
     plan = EditPlan()
     plan.edit_plan(
@@ -130,9 +153,12 @@ def test_edit_plan():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    plan.check_edit(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    plan.check_status_code_is_200()
+    plan.check_change(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Plan Options')
 def test_copy_plan():
     plan = CopyPlan()
     plan.copy_plan(
@@ -142,9 +168,12 @@ def test_copy_plan():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    plan.check_status_code_is_201()
     plan.check_copy_plan(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Metric Options')
 def test_create_metric():
     metric = CreateMetric()
     metric.create_metric(
@@ -154,9 +183,12 @@ def test_create_metric():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    metric.check_status_code_is_201()
     metric.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Feature Options')
 def test_create_feature():
     feature = CreateFeature()
     feature.create_feature(
@@ -166,9 +198,12 @@ def test_create_feature():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    feature.check_status_code_is_201()
     feature.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Feature Options')
 def test_edit_feature():
     feature = EditFeature()
     feature.edit_feature(
@@ -178,9 +213,12 @@ def test_edit_feature():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    feature.check_edit(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    feature.check_status_code_is_200()
+    feature.check_change(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Feature Options')
 def test_add_feature():
     feature = AddFeature()
     feature.add_feature(
@@ -190,9 +228,12 @@ def test_add_feature():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    feature.check_status_code_is_201()
     feature.check_add_feature(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Feature Options')
 def test_edit_plan_feature():
     plan_feature = EditPlanFeature()
     plan_feature.edit_plan_feature(
@@ -202,14 +243,20 @@ def test_edit_plan_feature():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
-    plan_feature.check_edit(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    plan_feature.check_status_code_is_200()
+    plan_feature.check_change(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Trial ID')
 def test_get_trial_id():
     trial_id = GetTrialID()
     trial_id.get_trial_id(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    trial_id.check_status_code_is_200()
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Trial Options')
 def test_update_trial():
     trial = UpdateTrial()
     trial.update_trial(
@@ -219,9 +266,12 @@ def test_update_trial():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    trial.check_status_code_is_200()
     trial.check_update_trial(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Trial Options')
 def test_statr_trial():
     trial = StartTrial()
     trial.start_trial(
@@ -231,15 +281,21 @@ def test_statr_trial():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    trial.check_status_code_is_200()
     trial.check_start(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Trial Options')
 def test_end_trial():
     trial = EndTrial()
     trial.end_trial(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    trial.check_status_code_is_200()
     trial.check_end(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Addendum Options')
 def test_create_new_addendum():
     addendum = CreateAddendum()
     addendum.create_addendum(
@@ -249,21 +305,20 @@ def test_create_new_addendum():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    addendum.check_status_code_is_201()
     addendum.check_activate(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
-def test_create_expense():
-    expense = CreateExpense()
-    expense.create_expense(
-        url_bill=url_bill,
-        headers=headers,
-        payload=create_expense_payload(),
-        max_retries=max_retries,
-        wait_sec=wait_sec
-    )
-    expense.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+@allure.feature('Smoke API Billing')
+@allure.story('Get Money Value')
+def test_get_first_money_value():
+    money_value = GetMoneyValue()
+    money_value.get_money_value(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    money_value.check_status_code_is_200()
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Invoice Options')
 def test_create_invoice():
     invoice = CreateInvoice()
     invoice.create_invoice(
@@ -273,15 +328,36 @@ def test_create_invoice():
         max_retries=max_retries,
         wait_sec=wait_sec
     )
+    invoice.check_status_code_is_201()
     invoice.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Expense Options')
+def test_create_expense():
+    expense = CreateExpense()
+    expense.create_expense(
+        url_bill=url_bill,
+        headers=headers,
+        payload=create_expense_payload(),
+        max_retries=max_retries,
+        wait_sec=wait_sec
+    )
+    expense.check_status_code_is_201()
+    expense.check_create(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+
+
+@allure.feature('Smoke API Billing')
+@allure.story('Invoice Options')
 def test_update_invoice():
     invoice = UpdateInvoice()
     invoice.update_invoice(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
+    invoice.check_status_code_is_200()
     invoice.check_update(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Invoice Options')
 def test_delete_invoice_item():
     invoice = DeleteInvoiceItem()
     invoice.get_invoice_item_id(url_bill=url_bill, headers=headers)
@@ -290,6 +366,8 @@ def test_delete_invoice_item():
     invoice.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Invoice Options')
 def test_delete_invoice():
     invoice = DeleteInvoice()
     invoice.delete_invoice(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
@@ -297,6 +375,8 @@ def test_delete_invoice():
     invoice.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Feature Options')
 def test_delete_plan_feature():
     plan_feature = DeletePlanFeature()
     plan_feature.delete_plan_feature(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
@@ -304,6 +384,8 @@ def test_delete_plan_feature():
     plan_feature.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Plan Options')
 def test_delete_copy_plan():
     plan = DeleteCopyPlan()
     plan.delete_copy_plan(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
@@ -311,6 +393,8 @@ def test_delete_copy_plan():
     plan.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Plan Options')
 def test_delete_plan():
     plan = DeletePlan()
     plan.delete_plan(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
@@ -318,6 +402,8 @@ def test_delete_plan():
     plan.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Feature Options')
 def test_delete_feature():
     feature = DeleteFeature()
     feature.delete_feature(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
@@ -325,6 +411,8 @@ def test_delete_feature():
     feature.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Metric Options')
 def test_delete_metric():
     metric = DeleteMetric()
     metric.delete_metric(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
@@ -332,6 +420,8 @@ def test_delete_metric():
     metric.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Contract Options')
 def test_delete_contract():
     contract = DeleteContract()
     contract.delete_contract(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
@@ -339,6 +429,8 @@ def test_delete_contract():
     contract.check_deletion(url_bill=url_bill, headers=headers, max_retries=max_retries, wait_sec=wait_sec)
 
 
+@allure.feature('Smoke API Billing')
+@allure.story('Client Options')
 def test_delete_client():
     client = DeleteClient()
     client.delete_client(
